@@ -20,11 +20,11 @@ shinyUI(fluidPage(
     ### For Style and Format
     
     tags$head(
-        HTML('<meta property="og:title" content="Distrito 18 en Numeros">
-    <meta property="og:image" content = "https://raw.githubusercontent.com/maibennett/d18/main/images/chart.png">
-    <meta property="og:description" content="Visualizacion y Simulaciones para el Distrito 18">')),
+        HTML('<meta property="og:title" content="Simulaciones 2da Vuelta Presidencial 2021">
+    <meta property="og:image" content = "https://raw.githubusercontent.com/maibennett/Presidenciales2daVuelta/main/images/chart.png">
+    <meta property="og:description" content="Visualizacion y Simulaciones para la 2do Vuelta Presidencial 2021">')),
     
-    tags$head(tags$link(rel="shortcut icon", href="https://raw.githubusercontent.com/maibennett/d18/main/images/chart.png")),
+    tags$head(tags$link(rel="shortcut icon", href="https://raw.githubusercontent.com/maibennett/Presidenciales2daVuelta/main/images/chart.png")),
     
     tags$head(HTML('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">')),
     
@@ -321,17 +321,18 @@ shinyUI(fluidPage(
     
     useShinydashboard(),
     
-    titlePanel(h1("D18 en numeros"),
-               windowTitle = "D18 en numeros"),
+    titlePanel(h1("2da Vuelta Presidencial Chile 2021"),
+               windowTitle = "2da Vuelta Presidencial Chile 2021"),
     
     navbarPage(h4("Menu",
                   style = "font-family: 'Roboto Condensed', sans-serif;
         font-weight: 300;"),id="panels",
                
-               tabPanel(h4("Simulaciones",
+               tabPanel(h4("Simulaciones a Nivel Pais",
                            style = "font-family: 'Roboto Condensed', sans-serif;
         font-weight: 300;"),value="residence",
-                        fluidRow(column(12,textOutput('total'),
+                        
+              fluidRow(column(12,textOutput('total'),
                                         tags$style("#total{color: #6D6F73;
                   font-size: 50px;
                   font-family: 'Roboto Condensed', sans-serif;
@@ -340,9 +341,9 @@ shinyUI(fluidPage(
                         fluidRow(column(12, textOutput("update")),
                                  tags$style('margin-bottom: 10px;')),
                         fluidRow(column(12,
-                                        h4(HTML("<p class='big'>Simulaciones para la eleccion de <b>Convencion Constitucional en el Distrito 18</b> en base a distintas elecciones:<br>
-                          <ul class='big'><li> Escenarios segun participacion, numero de listas, y contigencias.</li>
-                          <li> [Proximamente: Ajustes por paridad]</li></ul><br></p>")
+                                        h4(HTML("<p class='big'>Simulaciones para la eleccion Presidencial 2021 en base a distintos parametros:<br>
+                          <ul class='big'><li> Escenarios segun participacion y distribucion de votos.</li>
+                          <li> [Proximamente: Simulaciones a nivel de region y comuna]</li></ul><br></p>")
                                         ),tags$head(tags$style("h4{
                   font-size: 20px;
                   font-family: 'Roboto Condensed', sans-serif;
@@ -350,187 +351,171 @@ shinyUI(fluidPage(
                   }")))),
                         
                         fluidRow(column(12,
-                                        h3("Numeros de Listas:",
+                                        h3("Participacion General:",
                                            style = "font-family: 'Roboto Condensed', sans-serif;
         font-weight: 500;"))),
+                        
                         fluidRow(
                             column(
-                                width=3, 
-                                selectizeInput(
-                                    "listasderecha", label=h5("Derecha:",
-                                                        style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), choices=NULL, width="90%")
-                            ),
-                            column(
-                                width=3, 
-                                selectizeInput(
-                                    "listasconcerta", label=h5("Ex-Concertacion:",
-                                                     style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), choices=NULL, width="90%")
-                            ),
-                            column(
-                                width=3, 
-                                selectizeInput(
-                                    "listasizq", label=h5("Izquierda:",
+                                width=4, 
+                                sliderInput(
+                                    "part_abs", label=h5("Personas que NO votaron en 1era vuelta y votaran en 2da vuelta:",
                                                            style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), choices=NULL, width="90%")
-                            ),
+        font-weight: 500;"), value = 0, min=0, max=100, step = 0.2,width="90%")),
+                            
+                            column(width=2, h5("")),
+                            
                             column(
-                                width=3, 
-                                selectizeInput(
-                                    "listasindep", label=h5("Independientes",
-                                                              style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), choices=NULL, width="90%")
-                            )
+                              width=4, 
+                              sliderInput(
+                                "div_part_abs", label=h5("Entre estos nuevos participantes, como se dividen los votos? (% votos a Boric, el resto va a Kast)",
+                                                       style = "font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%"))
                         ),
-                        fluidRow(column(12,
-                                        h3("Parametros de participacion:",
-                                           style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"))),
-                        fluidRow(
-                          column(
-                            width=4, 
-                            sliderInput(
-                              "EfectoPandemia", label=h5("Efecto Pandemia:",
-                                                        style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 0.5, min=0, max=1, step = 0.25,width="90%")
-                          ),
-                          column(
-                            width=4, 
-                            selectizeInput(
-                              "EfectoPlebiscito", label=h5("Efecto Plebiscito:",
-                                                          style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), choices=NULL, width="90%")
-                          ),
-                          column(
-                            width=4, 
-                            selectizeInput(
-                              "metric", label=h5("% o num de votos?",
-                                                    style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), choices=NULL, width="90%")
-                          )
-                        ),
+                        
                         fluidRow(column(12,
                                         h2("",
                                            style = "font-family: 'Roboto Condensed', sans-serif;
         font-weight: 500;"))),
+                        
                         fluidRow(column(12,
-                                        h2("CORES 2017",
+                                        h3("Participacion por Ex-Candidato",
                                            style = "font-family: 'Roboto Condensed', sans-serif;
         font-weight: 500;"))),
-                        fluidRow(column(12,plotlyOutput("Votes2020_cores",width="100%"))
-                        ),
-                        fluidRow(column(12, HTML(paste0("<p class='note'>","Nota: Participacion basada en padron 2020, participacion 2017-2020, y votacion para COREs 2017","</p>")))),
                         
-                        fluidRow(column(12,"")
-                        ),
-                        
-                        fluidRow(column(12,plotlyOutput("Cupos2020_cores",width="100%"))
-                        ),
-                        fluidRow(column(12, HTML(paste0("<p class='note'>",
-                                                        "Nota: Participacion basada en padron 2020, 
-                                                        participacion 2017-2020, y votacion para COREs 2017","</p>")))),
                         fluidRow(column(12,
-                                        h2("Diputados 2017",
+                                        h4("Parisi:",
                                            style = "font-family: 'Roboto Condensed', sans-serif;
         font-weight: 500;"))),
-                        fluidRow(column(12,plotlyOutput("Votes2020_diputados",width="100%"))
-                        ),
-                        fluidRow(column(12, HTML(paste0("<p class='note'>","Nota: Participacion basada en padron 2020, participacion 2017-2020, y votacion para Diputadoss 2017","</p>")))),
                         
-                        fluidRow(column(12,"")
+                        fluidRow(
+                          column(
+                            width=4, 
+                            sliderInput(
+                              "abst_parisi", label=h5("Abstencion Votantes Parisi:",
+                                                     style = "font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 500;"), value = 0, min=0, max=100, step = 1,width="90%")),
+                          
+                          column(width=2, h5("")),
+                          
+                          column(
+                            width=4, 
+                            sliderInput(
+                              "div_part_parisi", label=h5("De los votantes que participen, como se dividen los votos? (% votos a Boric, el resto va a Kast)",
+                                                         style = "font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%"))
                         ),
                         
-                        fluidRow(column(12,plotlyOutput("Cupos2020_diputados",width="100%"))
-                        ),
-                        fluidRow(column(12, HTML(paste0("<p class='note'>",
-                                                        "Nota: Participacion basada en padron 2020, 
-                                                        participacion 2017-2020, y votacion para Diputados 2017","</p>")))),
                         fluidRow(column(12,
-                                        h2("Concejales 2016",
+                                        h4("Provoste:",
                                            style = "font-family: 'Roboto Condensed', sans-serif;
         font-weight: 500;"))),
-                        fluidRow(column(12,plotlyOutput("Votes2020_concejales",width="100%"))
-                        ),
-                        fluidRow(column(12, HTML(paste0("<p class='note'>","Nota: Participacion basada en padron 2020, participacion 2017-2020, y votacion para Concejales 2016","</p>")))),
                         
-                        fluidRow(column(12,"")
+                        fluidRow(
+                          column(
+                            width=4, 
+                            sliderInput(
+                              "abst_provoste", label=h5("Abstencion Votantes Provoste:",
+                                                      style = "font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 500;"), value = 0, min=0, max=100, step = 1,width="90%")),
+                          
+                          column(width=2, h5("")),
+                          
+                          column(
+                            width=4, 
+                            sliderInput(
+                              "div_part_provoste", label=h5("De los votantes que participen, como se dividen los votos? (% votos a Boric, el resto va a Kast)",
+                                                          style = "font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%"))
                         ),
                         
-                        fluidRow(column(12,plotlyOutput("Cupos2020_concejales",width="100%"))
+                        fluidRow(column(12,
+                                        h4("Sichel:",
+                                           style = "font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 500;"))),
+                        
+                        fluidRow(
+                          column(
+                            width=4, 
+                            sliderInput(
+                              "abst_sichel", label=h5("Abstencion Votantes Sichel:",
+                                                      style = "font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 500;"), value = 0, min=0, max=100, step = 1,width="90%")),
+                          
+                          column(width=2, h5("")),
+                          
+                          column(
+                            width=4, 
+                            sliderInput(
+                              "div_part_sichel", label=h5("De los votantes que participen, como se dividen los votos? (% votos a Boric, el resto va a Kast)",
+                                                          style = "font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%"))
                         ),
-                        fluidRow(column(12, HTML(paste0("<p class='note'>",
-                                                        "Nota: Participacion basada en padron 2020, 
-                                                        participacion 2017-2020, y votacion para Concejales 2016","</p>"))))
+                        
+                        fluidRow(
+                          column(
+                            width=4, 
+                            sliderInput(
+                              "abst_artes", label=h5("Abstencion Votantes Artes:",
+                                                      style = "font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 500;"), value = 0, min=0, max=100, step = 1,width="90%")),
+                          
+                          column(width=2, h5("")),
+                          
+                          column(
+                            width=4, 
+                            sliderInput(
+                              "div_part_artes", label=h5("De los votantes que participen, como se dividen los votos? (% votos a Boric, el resto va a Kast))",
+                                                          style = "font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%"))
+                        ),
+                        
+                        fluidRow(column(12,
+                                        h2("",
+                                           style = "font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 500;"))),
+                        
+                        fluidRow(
+                          column(
+                            width=4, 
+                            sliderInput(
+                              "abst_meo", label=h5("Abstencion Votantes MEO:",
+                                                      style = "font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 500;"), value = 0, min=0, max=100, step = 1,width="90%")),
+                          
+                          column(width=2, h5("")),
+                          
+                          column(
+                            width=4, 
+                            sliderInput(
+                              "div_part_meo", label=h5("De los votantes que participen, como se dividen los votos? (% votos a Boric, el resto va a Kast)",
+                                                          style = "font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%"))
+                        ),
+                        
+                        fluidRow(column(12,
+                                        h2("Simulacion 2da vuelta 2021",
+                                           style = "font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 500;"))),
+                        fluidRow(column(12,plotlyOutput("results_all",width="100%"))
+                        ),
+                        fluidRow(column(12, HTML(paste0("<p class='note'>","Nota: Participacion basada en la primera vuelta y parametros entregados por el usuario","</p>"))))
+                        
                ),
                
-               tabPanel(h4("Votacion por Comuna",
+               tabPanel(h4("Simulaciones por Region",
                            style = "font-family: 'Roboto Condensed', sans-serif;
         font-weight: 300;"),value="residence",
                         fluidRow(column(12,"")),
                         fluidRow(column(12, ""),
                                  tags$style('margin-bottom: 10px;')),
                         fluidRow(column(12,
-                                        h4(HTML("<p class='big'>Votaciones por comuna para <b>distintas votaciones</b>:<br>
-                          <ul class='big'><li> Partidos con mayor porcentaje y numero de votos por comuna.</li>
-                          <li>Candidatos con mayor porcentaje y numero de votos por comuna.</li></ul><br></p>")
+                                        h4(HTML("<p class='big'>Simulaciones a nivel de region para analizar como se comportaron las distintas zonas del pais y ver donde hay mas espacio para crecer.</li></ul><br></p>")
                                         ),tags$head(tags$style("h4{
                   font-size: 20px;
                   font-family: 'Roboto Condensed', sans-serif;
                   font-weight: 200;
-                  }")))),
-                        fluidRow(column(12, ""),
-                                 tags$style('margin-bottom: 10px;')),
-                        fluidRow(column(12,
-                                        h4(HTML("<p class='big'><b>Instrucciones</b>:<br>
-                          <ul class='big'><li> Seleccionar eleccion que se quiere analizar</li>
-                          <li> Elegir partidos para los que se quiere ver los candidatos mas votados.</li>
-                          <li>Seleccionar como se quieren ordenar las comunas (por numero de votos (N) o porcentaje de votos (%)).</li></ul><br></p>")
-                                        ),tags$head(tags$style("h4{
-                  font-size: 20px;
-                  font-family: 'Roboto Condensed', sans-serif;
-                  font-weight: 200;
-                  }")))),
-                        
-                        fluidRow(column(12,
-                                        h3("Parametros:",
-                                           style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"))),
-                        fluidRow(
-                          column(
-                            width=3, 
-                            selectizeInput(
-                              "eleccion", label=h5("Eleccion:",
-                                                   style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), choices=NULL, width="90%")
-                          ),
-                          column(
-                            width=3, 
-                            selectizeInput(
-                              "partido", label=h5("Partido:",
-                                                  style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), choices=NULL, width="90%")
-                          ),
-                          column(
-                            width=3, 
-                            selectizeInput(
-                              "metric2", label=h5("N o %:",
-                                                  style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), choices=NULL, width="90%")
-                          )),
-                        fluidRow(column(12,
-                                        h4(HTML("<p class='big'> <br> </p>")),tags$head(tags$style("h4{
-                  font-size: 20px;
-                  font-family: 'Roboto Condensed', sans-serif;
-                  font-weight: 200;
-                  }")))),
-                        fluidRow(column(12,leafletOutput("map_comuna",width="100%"))
-                        ),
-                        fluidRow(column(12, HTML(paste0("<p class='note'>",
-                                                        "Nota: Datos sacados del SERVEL para votaciones CORES 2017, 
-                                                        Diputados 2017, y Concejales 2016","</p>")))),
-                        fluidRow(column(12,"",tags$style('margin-bottom: 10px;'))
-                        )
+                  }"))))
                ),
                
                tabPanel(h4("Supuestos",
@@ -541,56 +526,9 @@ shinyUI(fluidPage(
         font-weight: 500;"))),
                         fluidRow(column(12,
                                         h4(HTML("<p class='big'>Aca se describen los supuestos para los distintos parametros segun:</b>:<br>
-                        <ul class='big'><li> Como se agrupan los partidos dependiendo del numero de listas</li>
-                        <li> Estimacion de efecto COVID y Plebiscito</li></ul><br>
+                        <ul class='big'><li> [COMPLETAR]</li>
+                        <li> [COMPLETEAR]</li></ul><br>
                         </p>")
-                                        ),tags$head(tags$style("h4{
-                  font-size: 20px;
-                  font-family: 'Roboto Condensed', sans-serif;
-                  font-weight: 200;
-                  }")))),
-                        fluidRow(column(12,h3(HTML("Agrupacion de partidos por lista"),
-                                              style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"))),
-                        fluidRow(column(12,
-                                        h4(HTML("<p class='big'>Se utilizan las listas para las elecciones de COREs 2017 en el Distrito 18, agrupando a los partidos de la siguiente manera:<br>
-                        <ul class='big'><li> Derecha 1: Evopoli + RN + Independientes</li>
-                        <li> Derecha 2: UDI + PRI + Independientes</li>
-                        <li> Derecha: Derecha 1 + Derecha 2</li>
-                        <li> Ex-Concertacion 1: PRO + PPD + PR + Independientes</li>
-                        <li> Ex-Concertacion 2: PS + DC + Independientes</li>
-                        <li> Izquierda 1: PC</li>
-                        <li> Izquierda 2: FA + Independientes </li></ul><br>
-                                                <br>
-                                                Si es que hay una lista de independientes, se asume que son los candidatos independientes de izquierda.
-                                                </p>")
-                                        ),tags$head(tags$style("h4{
-                  font-size: 20px;
-                  font-family: 'Roboto Condensed', sans-serif;
-                  font-weight: 200;
-                  }")))),
-                        fluidRow(column(12,h3(HTML("Estimacion de Efecto COVID"),
-                                              style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"))),
-                        fluidRow(column(12,
-                                        h4(HTML("<p class='big'>El efecto COVID se considera como el efecto en <b>participacion a nivel de comuna</b> de la siguiente manera:<br>
-                        <ul class='big'><li> Diferencia promedio de participacion entre 2017 y 2020</li>
-                        <li> Efecto diferencial segun % del padron de adultos >65 para el 2020</li>
-                        <li> Efecto diferencial para comunas en etapa 1 o 2.</li></ul><br>
-                                                </p>")
-                                        ),tags$head(tags$style("h4{
-                  font-size: 20px;
-                  font-family: 'Roboto Condensed', sans-serif;
-                  font-weight: 200;
-                  }")))),
-                        fluidRow(column(12,h3(HTML("Estimacion de Efecto Plebiscito"),
-                                              style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"))),
-                        fluidRow(column(12,
-                                        h4(HTML("<p class='big'>El Efecto Plebiscito se considera como el efecto en <b>participacion a nivel de comuna</b> de la siguiente manera:<br>
-                        <ul class='big'><li> Efecto diferencial segun % del padron de adultos <35 para el 2020</li>
-                        <li> Efecto diferencial segun % de votacion de derecha el 2017</li></ul><br>
-                                                </p>")
                                         ),tags$head(tags$style("h4{
                   font-size: 20px;
                   font-family: 'Roboto Condensed', sans-serif;
