@@ -15,9 +15,6 @@ library(gtable)
 library(hrbrthemes)
 library(stringr)
 library(emo)
-library(leaflet)
-library(rgdal) 
-library(geojson)
 library(htmltools)
 
 hrbrthemes::update_geom_font_defaults(family=font_fsm)
@@ -142,7 +139,7 @@ server = function(input, output, session) {
                         (100-input$abst_meo)/100*n_meo*boric_meo/100)/n_total
         
         kast_parisi = 100-input$div_part_parisi
-        kasst_sichel = 100-input$div_part_sichel
+        kast_sichel = 100-input$div_part_sichel
         kast_provoste = 100-input$div_part_provoste
         kast_artes = 100-input$div_part_artes
         kast_meo = 100-input$div_part_meo
@@ -197,7 +194,16 @@ server = function(input, output, session) {
     }
     
   
-    output$results_all = renderPieChart_all ("Simulacion Resultados 2da Vuelta")
+    output$results_all = renderPieChart_all("")
     
+    output$update <- renderText({ 
+      data = d_new()
+      word = "gana"
+      
+      if(data$perc_candidato[data$candidato=="Boric"]<0.5){
+        word = "pierde"  
+      }
+      paste0("Gabriel Boric ",word," con ",round(data$perc_candidato[data$candidato=="Boric"]*100,2),"% de los votos")
+    })
 
 }

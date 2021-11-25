@@ -332,15 +332,7 @@ shinyUI(fluidPage(
                            style = "font-family: 'Roboto Condensed', sans-serif;
         font-weight: 300;"),value="residence",
                         
-              fluidRow(column(12,textOutput('total'),
-                                        tags$style("#total{color: #6D6F73;
-                  font-size: 50px;
-                  font-family: 'Roboto Condensed', sans-serif;
-                  font-weight: 700;
-                  }"))),
-                        fluidRow(column(12, textOutput("update")),
-                                 tags$style('margin-bottom: 10px;')),
-                        fluidRow(column(12,
+              fluidRow(column(12,
                                         h4(HTML("<p class='big'>Simulaciones para la eleccion Presidencial 2021 en base a distintos parametros:<br>
                           <ul class='big'><li> Escenarios segun participacion y distribucion de votos.</li>
                           <li> [Proximamente: Simulaciones a nivel de region y comuna]</li></ul><br></p>")
@@ -349,7 +341,19 @@ shinyUI(fluidPage(
                   font-family: 'Roboto Condensed', sans-serif;
                   font-weight: 200;
                   }")))),
-                        
+              
+              fluidRow(column(12,textOutput("update")),
+                       tags$style('margin-bottom: 50px;')),
+              
+              fluidRow(column(12,
+                              h2("Simulacion 2da vuelta 2021",
+                                 style = "font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 500;"))),          
+              fluidRow(column(12,plotlyOutput("results_all",width="150%"))
+              ),
+              fluidRow(column(12, HTML(paste0("<p class='note'>","Nota: Participacion basada en la primera vuelta y 
+                                                        parametros entregados por el usuario","</p>")))),
+              
                         fluidRow(column(12,
                                         h3("Participacion General:",
                                            style = "font-family: 'Roboto Condensed', sans-serif;
@@ -357,20 +361,20 @@ shinyUI(fluidPage(
                         
                         fluidRow(
                             column(
-                                width=4, 
+                                width=3, 
                                 sliderInput(
                                     "part_abs", label=h5("Personas que NO votaron en 1era vuelta y votaran en 2da vuelta:",
                                                            style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 0, min=0, max=100, step = 0.2,width="90%")),
+        font-weight: 500;"), value = 0, min=0, max=100, step = 0.2,width="90%", post="%")),
                             
-                            column(width=2, h5("")),
+                            column(width=1, h5("")),
                             
                             column(
-                              width=4, 
+                              width=3, 
                               sliderInput(
                                 "div_part_abs", label=h5("Entre estos nuevos participantes, como se dividen los votos? (% votos a Boric, el resto va a Kast)",
                                                        style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%"))
+        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%", post="%"))
                         ),
                         
                         fluidRow(column(12,
@@ -390,20 +394,20 @@ shinyUI(fluidPage(
                         
                         fluidRow(
                           column(
-                            width=4, 
+                            width=3, 
                             sliderInput(
                               "abst_parisi", label=h5("Abstencion Votantes Parisi:",
                                                      style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 0, min=0, max=100, step = 1,width="90%")),
+        font-weight: 500;"), value = 0, min=0, max=100, step = 1,width="90%", post="%")),
                           
-                          column(width=2, h5("")),
+                          column(width=1, h5("")),
                           
                           column(
-                            width=4, 
+                            width=3, 
                             sliderInput(
                               "div_part_parisi", label=h5("De los votantes que participen, como se dividen los votos? (% votos a Boric, el resto va a Kast)",
                                                          style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%"))
+        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%", post="%"))
                         ),
                         
                         fluidRow(column(12,
@@ -413,20 +417,20 @@ shinyUI(fluidPage(
                         
                         fluidRow(
                           column(
-                            width=4, 
+                            width=3, 
                             sliderInput(
                               "abst_provoste", label=h5("Abstencion Votantes Provoste:",
                                                       style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 0, min=0, max=100, step = 1,width="90%")),
+        font-weight: 500;"), value = 0, min=0, max=100, step = 1,width="90%", post="%")),
                           
-                          column(width=2, h5("")),
+                          column(width=1, h5("")),
                           
                           column(
-                            width=4, 
+                            width=3, 
                             sliderInput(
                               "div_part_provoste", label=h5("De los votantes que participen, como se dividen los votos? (% votos a Boric, el resto va a Kast)",
                                                           style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%"))
+        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%", post="%"))
                         ),
                         
                         fluidRow(column(12,
@@ -436,38 +440,38 @@ shinyUI(fluidPage(
                         
                         fluidRow(
                           column(
-                            width=4, 
+                            width=3, 
                             sliderInput(
                               "abst_sichel", label=h5("Abstencion Votantes Sichel:",
                                                       style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 0, min=0, max=100, step = 1,width="90%")),
+        font-weight: 500;"), value = 0, min=0, max=100, step = 1,width="90%", post="%")),
                           
-                          column(width=2, h5("")),
+                          column(width=1, h5("")),
                           
                           column(
-                            width=4, 
+                            width=3, 
                             sliderInput(
                               "div_part_sichel", label=h5("De los votantes que participen, como se dividen los votos? (% votos a Boric, el resto va a Kast)",
                                                           style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%"))
+        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%", post="%"))
                         ),
                         
                         fluidRow(
                           column(
-                            width=4, 
+                            width=3, 
                             sliderInput(
                               "abst_artes", label=h5("Abstencion Votantes Artes:",
                                                       style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 0, min=0, max=100, step = 1,width="90%")),
+        font-weight: 500;"), value = 0, min=0, max=100, step = 1,width="90%", post="%")),
                           
-                          column(width=2, h5("")),
+                          column(width=1, h5("")),
                           
                           column(
-                            width=4, 
+                            width=3, 
                             sliderInput(
                               "div_part_artes", label=h5("De los votantes que participen, como se dividen los votos? (% votos a Boric, el resto va a Kast))",
                                                           style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%"))
+        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%", post="%"))
                         ),
                         
                         fluidRow(column(12,
@@ -477,29 +481,21 @@ shinyUI(fluidPage(
                         
                         fluidRow(
                           column(
-                            width=4, 
+                            width=3, 
                             sliderInput(
                               "abst_meo", label=h5("Abstencion Votantes MEO:",
                                                       style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 0, min=0, max=100, step = 1,width="90%")),
+        font-weight: 500;"), value = 0, min=0, max=100, step = 1,width="90%", post="%")),
                           
-                          column(width=2, h5("")),
+                          column(width=1, h5("")),
                           
                           column(
-                            width=4, 
+                            width=3, 
                             sliderInput(
                               "div_part_meo", label=h5("De los votantes que participen, como se dividen los votos? (% votos a Boric, el resto va a Kast)",
                                                           style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%"))
-                        ),
-                        
-                        fluidRow(column(12,
-                                        h2("Simulacion 2da vuelta 2021",
-                                           style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"))),
-                        fluidRow(column(12,plotlyOutput("results_all",width="100%"))
-                        ),
-                        fluidRow(column(12, HTML(paste0("<p class='note'>","Nota: Participacion basada en la primera vuelta y parametros entregados por el usuario","</p>"))))
+        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%", post="%"))
+                        )
                         
                ),
                
