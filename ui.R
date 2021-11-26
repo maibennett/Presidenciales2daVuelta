@@ -540,7 +540,7 @@ shinyUI(fluidPage(
         font-weight: 500;"), value = 70, min=0, max=100, step = 1,width="90%", post="%")),
                           column(3,""),
                         ),
-    fluidRow(column(12, HTML(paste0("<p class='h4'>","Aplicacion construida por <a href='http://magdalenabennett.com'>Magdalena Bennett</a>","</p>"))))
+    fluidRow(column(12, h5(HTML(paste0("<p>","Aplicacion construida por <a href='http://magdalenabennett.com'>Magdalena Bennett</a>","</p>")))))
                         
                ),
                
@@ -575,10 +575,11 @@ shinyUI(fluidPage(
                   font-weight: 200;
                   }")))),
                         
-                        fluidRow(column(12, h5(HTML("<p class = 'h4'>", "Esta aplicacion fue construida por", 
+                        fluidRow(column(12, h5(HTML("<p>", "Esta aplicacion fue construida por", 
                                                     "<a href='http://magdalenabennett.com'>","Magdalena Bennett", "</a>", 
                                                     ". Por cualquier comentario, puedes ponerte en contacto usando la informacion en 
-                                                    <a href='http://magdalenabennett.com/contact'>esta pagina</a>","</p>"))))
+                                                    <a href='http://magdalenabennett.com/contact'>esta pagina</a>","</p>"),
+                                               style = "font-family: 'Roboto Condensed', sans-serif;")))
                )
     ) 
 ))

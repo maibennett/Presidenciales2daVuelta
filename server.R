@@ -2,16 +2,8 @@ library(dplyr)
 library(tidyr)
 library(RColorBrewer)
 library(firasans)
-library("shades")
-library("colorspace")
 library(htmltools)
 library("ggplot2")
-library("ggmap")
-library(wesanderson)
-library(scales)
-library(grid)
-library(gridExtra)
-library(gtable)
 library(hrbrthemes)
 library(stringr)
 library(emo)
@@ -19,6 +11,7 @@ library(htmltools)
 
 hrbrthemes::update_geom_font_defaults(family=font_fsm)
 
+# Datos servel y CASEN
 servel <- read.csv("https://raw.githubusercontent.com/maibennett/presidenciales_pobreza/main/data/servel_county_clean.csv")
 casen <- read.csv("https://raw.githubusercontent.com/maibennett/presidenciales_pobreza/main/data/casen_county_clean.csv")
 
@@ -29,6 +22,7 @@ d <- left_join(servel, casen, by = "comuna_nombre")
 d <- d %>% mutate(Boric = ifelse(candidato=="GABRIEL BORIC FONT", 1, 0),
                   Kast = ifelse(candidato=="JOSE ANTONIO KAST RIST", 1, 0))
 
+# Acortar nombre candidatos
 d <- d %>% mutate(candidato_apellido = ifelse(candidato=="GABRIEL BORIC FONT", "Boric",
                                               ifelse(candidato=="JOSE ANTONIO KAST RIST", "Kast",
                                                      ifelse(candidato=="EDUARDO ARTES BRICHETTI", "Artes",
@@ -38,23 +32,15 @@ d <- d %>% mutate(candidato_apellido = ifelse(candidato=="GABRIEL BORIC FONT", "
                                                                                  ifelse(candidato=="YASNA PROVOSTE CAMPILLAY", "Provoste",""))))))))
 
 
+# Eliminar filas de votos totales, blancos, y nulos
 d <- d %>% filter(candidato_apellido!="")
 
+# Pivot wider
 d_wide <- pivot_wider(d, id_cols = c(region_nombre, comuna_nombre, comuna_id), names_from = candidato_apellido,
                       values_from = c(total_votos, p_votos, total))
 
-#url <- 'https://raw.githubusercontent.com/pachamaltese/chilemapas/master/data_geojson/comunas/r07.geojson'
-#comunas_r07 <- rgdal::readOGR(url)
 
-#comunas_d18 = as.data.frame(cbind(c("Cauquenes","Chanco","Colbun","Linares","Longavi","Parral",
-#                                    "Pelluhue","Retiro","San Javier","Villa Alegre","Yerbas Buenas"),
-#                                  c("07201","07202","07402","07401","07403","07404",
-#                                    "07203","07405","07406","07407","07408")))
-#names(comunas_d18) = c("COMUNA","codigo_comuna")
-
-#comunas_r07 <- merge(comunas_r07,comunas_d18,by="codigo_comuna") 
-
-#comunas_d18 = comunas_r07[!is.na(comunas_r07$COMUNA),]
+# Datos de la primera vuelta
 total_inscritos = 15043531
 votos_total = 7115590
 p_boric = 1814809/votos_total
@@ -74,7 +60,7 @@ n_sichel = 898510
 n_provoste = 815558
 n_meo = 534485
 
-# Define server logic required to draw a histogram
+
 server = function(input, output, session) {
  
     updateSliderInput(session, "part_total", value = 5, min = 0, max = 100,
@@ -116,6 +102,10 @@ server = function(input, output, session) {
     
     d_new = reactive({
       
+      # Numero total de votantes son todos los de Boric y Kast de 1era vuelta +
+      # No votantes de 1era vuelta que votaran en 2da +
+      # Votantes de cada candidato que no se van a abster
+      
       n_total = n_boric + n_kast + input$part_abs/100*total_inscritos + 
         n_parisi - input$abst_parisi*n_parisi/100 + n_sichel - input$abst_sichel*n_sichel/100 + n_provoste - input$abst_provoste*n_provoste/100+ 
         n_artes - input$abst_artes*n_artes/100 + n_meo - input$abst_meo*n_meo/100
@@ -129,6 +119,10 @@ server = function(input, output, session) {
         boric_meo = input$div_part_meo
         
         boric_abs = input$div_part_abs
+        
+        # Boric tiene todos sus votos de 1era vuelta + 
+        # los que no participaron en 1era y van por el +
+        # los de los ex-candidatos q voten en 2da y vayan por el
         
         perc_boric = (n_boric + 
                         boric_abs/100*input$part_abs/100*total_inscritos +
