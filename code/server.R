@@ -80,37 +80,37 @@ server = function(input, output, session) {
     updateSliderInput(session, "part_total", value = 0, min = 0, max = 100,
                       step = 0.2)
   
-    updateSliderInput(session, "div_part_total", value = 0, min = -100, max = 100,
+    updateSliderInput(session, "div_part_total", value = 0, min = 0, max = 100,
                     step = 1)
     
-    updateSliderInput(session, "abst_parisi", value = 0, min = 0, max = 100,
+    updateSliderInput(session, "abst_parisi", value = 30, min = 0, max = 100,
                       step = 1)
     
-    updateSliderInput(session, "div_part_parisi", value = 50, min = 0, max = 100,
+    updateSliderInput(session, "div_part_parisi", value = 30, min = 0, max = 100,
                       step = 1)
     
-    updateSliderInput(session, "abst_provoste", value = 0, min = 0, max = 100,
+    updateSliderInput(session, "abst_provoste", value = 5, min = 0, max = 100,
                       step = 1)
     
-    updateSliderInput(session, "div_part_provoste", value = 50, min = 0, max = 100,
+    updateSliderInput(session, "div_part_provoste", value = 90, min = 0, max = 100,
                       step = 1)
     
-    updateSliderInput(session, "abst_sichel", value = 0, min = 0, max = 100,
+    updateSliderInput(session, "abst_sichel", value = 5, min = 0, max = 100,
                       step = 1)
     
-    updateSliderInput(session, "div_part_sichel", value = 50, min = 0, max = 100,
+    updateSliderInput(session, "div_part_sichel", value = 10, min = 0, max = 100,
                       step = 1)
     
     updateSliderInput(session, "abst_artes", value = 0, min = 0, max = 100,
                       step = 1)
     
-    updateSliderInput(session, "div_part_artes", value = 50, min = 0, max = 100,
+    updateSliderInput(session, "div_part_artes", value = 100, min = 0, max = 100,
                       step = 1)
     
-    updateSliderInput(session, "abst_meo", value = 0, min = 0, max = 100,
+    updateSliderInput(session, "abst_meo", value = 10, min = 0, max = 100,
                       step = 1)
     
-    updateSliderInput(session, "div_part_meo", value = 50, min = 0, max = 100,
+    updateSliderInput(session, "div_part_meo", value = 70, min = 0, max = 100,
                       step = 1)
 
     
@@ -196,14 +196,16 @@ server = function(input, output, session) {
   
     output$results_all = renderPieChart_all("")
     
-    output$update <- renderText({ 
+
+    output$update <- renderUI({ 
       data = d_new()
       word = "gana"
       
       if(data$perc_candidato[data$candidato=="Boric"]<0.5){
         word = "pierde"  
       }
-      paste0("Gabriel Boric ",word," con ",round(data$perc_candidato[data$candidato=="Boric"]*100,2),"% de los votos")
+      
+      HTML(paste0("<p align='center'>",paste0("Gabriel Boric ",word," con ",round(data$perc_candidato[data$candidato=="Boric"]*100,2),"% de los votos"),"</p>"))
     })
 
 }
