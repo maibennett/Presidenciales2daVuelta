@@ -390,7 +390,7 @@ shinyUI(fluidPage(
                                 sliderInput(
                                     "part_abs", label=h5("Personas que NO votaron en 1era vuelta y votaran en 2da vuelta:",
                                                            style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 0, min=0, max=100, step = 0.2,width="90%", post="%")),
+        font-weight: 500;"), value = 5, min=0, max=100, step = 0.2,width="90%", post="%")),
                             
                             column(width=1, h5("")),
                             
@@ -399,7 +399,7 @@ shinyUI(fluidPage(
                               sliderInput(
                                 "div_part_abs", label=h5("Entre estos nuevos participantes, como se dividen los votos? (% votos a Boric, el resto va a Kast)",
                                                        style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%", post="%")),
+        font-weight: 500;"), value = 60, min=0, max=100, step = 1,width="90%", post="%")),
               column(3,"")
                         ),
                         
@@ -425,16 +425,16 @@ shinyUI(fluidPage(
                             sliderInput(
                               "abst_parisi", label=h5("Abstencion Votantes Parisi:",
                                                      style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 0, min=0, max=100, step = 1,width="90%", post="%")),
+        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%", post="%")),
                           
                           column(width=1, h5("")),
                           
                           column(
                             width=3, 
                             sliderInput(
-                              "div_part_parisi", label=h5("De los votantes que participen, como se dividen los votos? (% votos a Boric, el resto va a Kast)",
+                              "div_part_parisi", label=h5("De los votantes de Parisi que participen, como se dividen los votos? (% votos a Boric, el resto va a Kast)",
                                                          style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%", post="%")),
+        font-weight: 500;"), value = 30, min=0, max=100, step = 1,width="90%", post="%")),
     column(3,"")
                         ),
                         
@@ -450,16 +450,16 @@ shinyUI(fluidPage(
                             sliderInput(
                               "abst_provoste", label=h5("Abstencion Votantes Provoste:",
                                                       style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 0, min=0, max=100, step = 1,width="90%", post="%")),
+        font-weight: 500;"), value = 5, min=0, max=100, step = 1,width="90%", post="%")),
                           
                           column(width=1, h5("")),
                           
                           column(
                             width=3, 
                             sliderInput(
-                              "div_part_provoste", label=h5("De los votantes que participen, como se dividen los votos? (% votos a Boric, el resto va a Kast)",
+                              "div_part_provoste", label=h5("De los votantes de Provoste que participen, como se dividen los votos? (% votos a Boric, el resto va a Kast)",
                                                           style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%", post="%")),
+        font-weight: 500;"), value = 90, min=0, max=100, step = 1,width="90%", post="%")),
                           column(3,"")
                         ),
                         
@@ -475,16 +475,16 @@ shinyUI(fluidPage(
                             sliderInput(
                               "abst_sichel", label=h5("Abstencion Votantes Sichel:",
                                                       style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 0, min=0, max=100, step = 1,width="90%", post="%")),
+        font-weight: 500;"), value = 5, min=0, max=100, step = 1,width="90%", post="%")),
                           
                           column(width=1, h5("")),
                           
                           column(
                             width=3, 
                             sliderInput(
-                              "div_part_sichel", label=h5("De los votantes que participen, como se dividen los votos? (% votos a Boric, el resto va a Kast)",
+                              "div_part_sichel", label=h5("De los votantes de Sichel que participen, como se dividen los votos? (% votos a Boric, el resto va a Kast)",
                                                           style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%", post="%")),
+        font-weight: 500;"), value = 10, min=0, max=100, step = 1,width="90%", post="%")),
                           column(3,"")
                         ),
     column(width=1, h5("")),
@@ -508,9 +508,9 @@ shinyUI(fluidPage(
                           column(
                             width=3, 
                             sliderInput(
-                              "div_part_artes", label=h5("De los votantes que participen, como se dividen los votos? (% votos a Boric, el resto va a Kast))",
+                              "div_part_artes", label=h5("De los votantes de Artes que participen, como se dividen los votos? (% votos a Boric, el resto va a Kast))",
                                                           style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%", post="%")),
+        font-weight: 500;"), value = 100, min=0, max=100, step = 1,width="90%", post="%")),
                           column(3,"")
                         ),
                         
@@ -528,16 +528,16 @@ shinyUI(fluidPage(
                             sliderInput(
                               "abst_meo", label=h5("Abstencion Votantes MEO:",
                                                       style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 0, min=0, max=100, step = 1,width="90%", post="%")),
+        font-weight: 500;"), value = 10, min=0, max=100, step = 1,width="90%", post="%")),
                           
                           column(width=1, h5("")),
                           
                           column(
                             width=3, 
                             sliderInput(
-                              "div_part_meo", label=h5("De los votantes que participen, como se dividen los votos? (% votos a Boric, el resto va a Kast)",
+                              "div_part_meo", label=h5("De los votantes de MEO que participen, como se dividen los votos? (% votos a Boric, el resto va a Kast)",
                                                           style = "font-family: 'Roboto Condensed', sans-serif;
-        font-weight: 500;"), value = 50, min=0, max=100, step = 1,width="90%", post="%")),
+        font-weight: 500;"), value = 70, min=0, max=100, step = 1,width="90%", post="%")),
                           column(3,""),
                         ),
     fluidRow(column(12, HTML(paste0("<p class='h4'>","Aplicacion construida por <a href='http://magdalenabennett.com'>Magdalena Bennett</a>","</p>"))))

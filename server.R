@@ -77,13 +77,13 @@ n_meo = 534485
 # Define server logic required to draw a histogram
 server = function(input, output, session) {
  
-    updateSliderInput(session, "part_total", value = 0, min = 0, max = 100,
+    updateSliderInput(session, "part_total", value = 5, min = 0, max = 100,
                       step = 0.2)
   
-    updateSliderInput(session, "div_part_total", value = 0, min = 0, max = 100,
+    updateSliderInput(session, "div_part_total", value = 60, min = 0, max = 100,
                     step = 1)
     
-    updateSliderInput(session, "abst_parisi", value = 30, min = 0, max = 100,
+    updateSliderInput(session, "abst_parisi", value = 50, min = 0, max = 100,
                       step = 1)
     
     updateSliderInput(session, "div_part_parisi", value = 30, min = 0, max = 100,
