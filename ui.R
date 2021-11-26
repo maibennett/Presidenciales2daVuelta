@@ -365,7 +365,7 @@ shinyUI(fluidPage(
 
               
               fluidRow(column(12,
-                              h2("Simulacion 2da vuelta 2021",
+                              h2("Simulación 2da vuelta 2021",
                                  style = "font-family: 'Roboto Condensed', sans-serif;
         font-weight: 500;"))),          
               fluidRow(column(12,div(plotlyOutput("results_all",width="100%", height = "100%"), align = "center"))
