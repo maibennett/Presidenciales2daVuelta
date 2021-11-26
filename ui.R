@@ -341,10 +341,16 @@ shinyUI(fluidPage(
                   style = "font-family: 'Roboto Condensed', sans-serif;
         font-weight: 300;"),id="panels",
                
-               tabPanel(h4("Simulaciones a Nivel Pais",
+               tabPanel(h4("Simulaciones a Nivel País",
                            style = "font-family: 'Roboto Condensed', sans-serif;
         font-weight: 300;"),value="residence",
-                        
+              
+                        fluidRow(column(12,HTML("<p>","Autora: Magdalena Bennett "," &nbsp","<a href='https://magdalenabennett.com'><i class='fa fa-desktop' role='presentation'></i></a>&nbsp",
+                                                   "<a href='https://twitter.com/maibennett'><i class='fa fa-twitter' role='presentation'></i></a>&nbsp",
+                                                "<a href='https://github.com/maibennett'><i class='fa fa-github' role='presentation'></i></a>&nbsp","</p>"),
+                                           style = "font-family: 'Roboto Condensed', sans-serif; font-weight: bold;")),
+              
+                                  
               fluidRow(column(12,
                                         h4(HTML("<p class='big'>Simulaciones para la elección Presidencial 2021 en base a distintos parámetros:<br>
                           <ul class='big'><li> Escenarios según participación y distribución de votos.</li>
@@ -354,6 +360,7 @@ shinyUI(fluidPage(
                   font-family: 'Roboto Condensed', sans-serif;
                   font-weight: 200;
                   }")))),
+              
               
               fluidRow(column(4,""),
                        column(4,box(title=span(icon("check"),HTML("<b>","Resultados Simulaciones","</b>"),
@@ -490,7 +497,7 @@ shinyUI(fluidPage(
     column(width=1, h5("")),
     
     fluidRow(column(12,
-                    h4("Artes:",
+                    h4("Artés:",
                        style = "font-family: 'Roboto Condensed', sans-serif;
         font-weight: 500;"))),
     
@@ -540,7 +547,7 @@ shinyUI(fluidPage(
         font-weight: 500;"), value = 70, min=0, max=100, step = 1,width="90%", post="%")),
                           column(3,""),
                         ),
-    fluidRow(column(12, h5(HTML(paste0("<p>","Aplicación construida por <a href='http://magdalenabennett.com'>Magdalena Bennett</a>","</p>")))))
+    fluidRow(column(12, h5(HTML(paste0("<p>","</p>")))))
                         
                ),
                
