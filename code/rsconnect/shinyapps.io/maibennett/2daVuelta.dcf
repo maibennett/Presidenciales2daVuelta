@@ -5,9 +5,9 @@ account: maibennett
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 5206722
-bundleId: 5294445
+bundleId: 5294480
 url: https://maibennett.shinyapps.io/2daVuelta/
-when: 1637886091.00681
-lastSyncTime: 1637886091.00681
+when: 1637887470.72462
+lastSyncTime: 1637887470.72462
 asMultiple: FALSE
 asStatic: FALSE
