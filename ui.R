@@ -552,6 +552,50 @@ shinyUI(fluidPage(
                ),
                
                
+    tabPanel(h4("Análisis",
+                style = "font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 300;"),value="analisis",
+             fluidRow(column(12,h3(HTML("<b>Análisis de resultados</b>"),
+                                   style = "font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 500;"))),
+             fluidRow(column(12,
+                             h4(HTML("<p class='big'>En esta sección realizaré diferentes análisis con respecto a los datos. 
+                             Esta sección se irá complentando a medida que obtenga nuevos análisis.</p>")
+                             ),tags$head(tags$style("h4{
+                  font-size: 20px;
+                  font-family: 'Roboto Condensed', sans-serif;
+                  font-weight: 200;
+                  }")))),
+             
+             fluidRow(column(12,h3(HTML("<b>Dónde ir a buscar votos</b>"),
+                                   style = "font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 500;"))),
+             
+             fluidRow(column(12,
+                             h4(HTML("<p class='big'>", "Una pregunta importante para la 2da vuelta es si nuevos votantes se incorporarán o no, y si lo hacen, dónde le conviene a la campaña de Gabriel Boric ir a buscarlos.
+                                     Los siguientes mapas muestran dónde podría convenir (a nivel de región) focalizar los esfuerzos, comparando la diferencia entre votos del plebiscito 
+                                     (nuestro benchmark o referencia) y los votos de primera vuelta.","</p>")
+                             ),tags$head(tags$style("h4{
+                  font-size: 20px;
+                  font-family: 'Roboto Condensed', sans-serif;
+                  font-weight: 200;
+                  }")))),
+             
+             fluidRow(
+               column(
+                 width=4,selectizeInput(
+                   "region", label=h5("Seleccione región:",
+                                        style = "font-family: 'Roboto Condensed', sans-serif;
+        font-weight: 500;"), choices=c("XV - Arica y Parinacota","I - Tarapaca","II - Antofagasta","III - Atacama","IV - Coquimbo",
+                                       "V - Valparaiso","XIII - Metropolitana","VI - Libertador General Bernardo O'Higgins","VII - Maule",
+                                       "XVI - Ñuble", "VIII - Biobio", "IX - Araucania","XIV - Los Rios","X - Los Lagos", 
+                                       "XI - Aysen", "XII - Magallanes"), 
+                   selected="XIII - Metropolitana", width="90%"))
+             ),
+             fluidRow(column(2,""),column(8,leafletOutput("map_votes",width="100%")), column(2,"")
+             ),
+    ),
+    
                tabPanel(h4("Supuestos",
                            style = "font-family: 'Roboto Condensed', sans-serif;
         font-weight: 300;"),value="supuestos",

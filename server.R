@@ -21,7 +21,46 @@ library(geojson)
 library(htmltools)
 library(chilemapas)
 
+options(scipen = 99)
+
 hrbrthemes::update_geom_font_defaults(family=font_fsm)
+
+d_mapa <- read.csv("https://raw.githubusercontent.com/maibennett/Presidenciales2daVuelta/main/data/servel_1era_plebiscito_county_clean.csv", encoding = "UTF-8")
+
+d_mapa$nombre_comuna <- str_to_title(d_mapa$comuna_nombre)
+
+d_mapa$nombre_comuna <- str_replace(d_mapa$nombre_comuna," De "," de ")
+d_mapa$nombre_comuna <- str_replace(d_mapa$nombre_comuna," Del "," del ")
+d_mapa$nombre_comuna <- str_replace(d_mapa$nombre_comuna," La "," la ")
+d_mapa$nombre_comuna <- str_replace(d_mapa$nombre_comuna," Las "," las ")
+
+d_mapa$nombre_comuna[d_mapa$nombre_comuna=="Paihuano"] <- "Paiguano"
+d_mapa$nombre_comuna[d_mapa$nombre_comuna=="Marchigue"] <- "Marchihue"
+d_mapa$nombre_comuna[d_mapa$nombre_comuna=="Trehuaco"] <- "Treguaco"
+d_mapa$nombre_comuna[d_mapa$nombre_comuna=="O'higgins"] <- "OHiggins"
+d_mapa$nombre_comuna[d_mapa$nombre_comuna=="Aysen"] <- "Aisen"
+d_mapa$nombre_comuna[d_mapa$nombre_comuna=="Coyhaique"] <- "Coihaique" 
+d_mapa$nombre_comuna[d_mapa$nombre_comuna=="Cabo de Hornos(Ex-Navarino)"] <- "Cabo de Hornos"
+
+d_mapa$nombre_comuna <- str_replace(d_mapa$nombre_comuna,"Ñ","N")
+d_mapa$nombre_comuna <- str_replace(d_mapa$nombre_comuna,"ñ","n")
+d_mapa$nombre_comuna <- str_replace(d_mapa$nombre_comuna,"á","a")
+d_mapa$nombre_comuna <- str_replace(d_mapa$nombre_comuna,"é","e")
+d_mapa$nombre_comuna <- str_replace(d_mapa$nombre_comuna,"í","i")
+d_mapa$nombre_comuna <- str_replace(d_mapa$nombre_comuna,"ó","o")
+d_mapa$nombre_comuna <- str_replace(d_mapa$nombre_comuna,"ú","ú")
+
+
+mapa_comunas <- mapa_comunas %>% 
+  left_join(
+    codigos_territoriales %>% 
+      select(matches("comuna"))
+  ) %>% 
+  left_join(d_mapa)
+
+mapa_comunas <- mapa_comunas %>% filter(nombre_comuna!="Isla de Pascua" & nombre_comuna!="Juan Fernandez")
+  
+mapa_comunas <- st_sf(mapa_comunas)
 
 # Datos servel y CASEN
 servel <- read.csv("https://raw.githubusercontent.com/maibennett/presidenciales_pobreza/main/data/servel_county_clean.csv")
@@ -112,6 +151,12 @@ server = function(input, output, session) {
                       step = 1)
 
     
+    updateSelectInput(session, "region", choices=c("XV - Arica y Parinacota","I - Tarapaca","II - Antofagasta","III - Atacama","IV - Coquimbo",
+                                                   "V - Valparaiso","XIII - Metropolitana","VI - Libertador General Bernardo O'Higgins","VII - Maule",
+                                                   "XVI - Ñuble", "VIII - Biobio", "IX - Araucania","XIV - Los Rios","X - Los Lagos", 
+                                                   "XI - Aysen", "XII - Magallanes"), 
+                      selected="XIII - Metropolitana")
+    
     d_new = reactive({
       
       # Numero total de votantes son todos los de Boric y Kast de 1era vuelta +
@@ -164,7 +209,7 @@ server = function(input, output, session) {
           "n_total" = rep(n_total,2),
           "p_total" = rep(part_total,2),
           "perc_candidato" = c(perc_boric, perc_kast),
-          "n_candidato" = c(perc_boric, perc_kast)*total_inscritos,
+          "n_candidato" = c(perc_boric, perc_kast)*n_total,
           "candidato" = c("Boric", "Kast")
           
         )
@@ -172,6 +217,21 @@ server = function(input, output, session) {
         d_new
     })
     
+    d_mapa2 = reactive({
+      
+      regiones = data.frame(nombre = c("XV - Arica y Parinacota","I - Tarapaca","II - Antofagasta","III - Atacama","IV - Coquimbo",
+                                       "V - Valparaiso","XIII - Metropolitana","VI - Libertador General Bernardo O'Higgins","VII - Maule",
+                                       "XVI - Ñuble", "VIII - Biobio", "IX - Araucania","XIV - Los Rios","X - Los Lagos", 
+                                       "XI - Aysen", "XII - Magallanes"),
+                            codigo = c("15","01","02", "03", "04", "05", "13", "06", "07", "16", "08", "09", "14", "10", "11", "12"))
+      
+      region = regiones$codigo[regiones$nombre==input$region]
+      
+      d <- mapa_comunas %>% filter(codigo_region==region)
+      
+      d
+        
+    })
     
     renderPieChart_all = function(mainTitle) {
       renderPlotly({
@@ -180,28 +240,89 @@ server = function(input, output, session) {
         data$n = round(data$perc_candidato*100,2)
         
         col_pie = c("#8bb74c","#ecb448")
+      
+        participation = data$p_total
+        
+        m1 <- list(
+          l = 50,
+          r = 50,
+          b = 80,
+          t = 70,
+          pad = 4
+        )
         
         plt = data %>% plot_ly(labels = ~candidato, values = ~perc_candidato,
                                type = "pie", textposition = 'inside',
                                textinfo = 'label+percent',
                                insidetextfont = list(color = '#FFFFFF',size=14),
+                               text = ~paste0('<b>', data$candidato, '</b>: <br>',
+                                              "N Votos: ", formatC(round(data$n_candidato,0), big.mark = ",", format="d"),"<br>",
+                                              "% Votos: ",round(data$perc_candidato*100,1)),
                                hoverinfo = 'text',
-                               text = ~paste0(n,"%"),
                                marker = list(colors = col_pie,
                                              line = list(color = '#FFFFFF', width = 3)),
                                #The 'pull' attribute can also be used to create space between the sectors
                                showlegend = FALSE) %>%
-          layout(title = mainTitle,
+          layout(title = mainTitle, margin = m1,
                  xaxis = list(showgrid = FALSE, zeroline = TRUE, showticklabels = FALSE),
-                 yaxis = list(showgrid = FALSE, zeroline = TRUE, showticklabels = FALSE))
+                 yaxis = list(showgrid = FALSE, zeroline = TRUE, showticklabels = FALSE)) %>%
+          layout(annotations = 
+                   list(x = 0.5, y = 1.15, text = ~paste0("Participación total: ",round(participation*100,1),"%<br>",
+                                                          "Diferencia de votos: ",formatC(abs(round(data$n_candidato[1],0) - round(data$n_candidato[2],0)), big.mark =",", format = "d")), 
+                        showarrow = F, xref='paper', yref='paper', 
+                        xanchor='auto', yanchor='auto', xshift=0, yshift=0,
+                        font=list(size=15))
+          )
         
         plt
       })
     }
     
+    renderMap_votes = function(mainTitle){
+      renderLeaflet({
+        
+        cols1 = c("#3279a2","#5fb7a2","#8bb74c","#ecb448","#e35b35","#c42727")
+        
+        data <- d_mapa2()
+        
+        pal <- colorNumeric(
+          palette = cols1[length(cols1):1],
+          domain = data$dif_1era_pleb
+        )
+        
+        data2 <- as.data.frame(data)
+        
+        labs <- lapply(seq(nrow(data2)), function(i) {
+          paste0( '<p><b>', data2[i, "nombre_comuna"], '</b></p>', 
+                  "<p>Part. Plebiscito: ",round(data2[i, "participacion"]*100,1),'%</p><p>', 
+                  "Apruebo: ",round(data2[i, "voto_apruebo"]/data2[i, "total_votos_pleb"]*100,1),'%</p><p>', 
+                  "<p>Part. 1era Vuelta: ",round(data2[i, "total_votos_1era"]/data2[i, "total_votos_pleb"]*data2[i, "participacion"]*100,1),'%</p><p>', 
+                  "Dif. Votos 1era Vuelta - Plebiscito: ",data2[i, "dif_1era_pleb"], '</p>' ) 
+        })
+        
+        map <- leaflet() %>% 
+          addProviderTiles(providers$CartoDB.Positron) %>% 
+          addPolygons(data = data,
+                      fillColor = ~pal(dif_1era_pleb),
+                      color = "#b2aeae",
+                      fillOpacity = 0.7,
+                      smoothFactor = 0.2,
+                      weight = 1,
+                      popup = lapply(labs, htmltools::HTML),
+                      popupOptions = popupOptions(maxWidth = 300, closeOnClick = TRUE)) %>%   
+          addLegend(pal = pal, # paleta de colores 
+                    values = data$dif_1era_pleb,
+                    position = "bottomright",
+                    title = "Diferencia votos (N)") %>% addPolylines(data = data, color = "white", opacity = 1, weight = 1) 
+        
+        map
+        
+      })
+    }
   
     output$results_all = renderPieChart_all("")
     
+    output$map_votes = renderMap_votes("")
 
     output$update <- renderUI({ 
       data = d_new()
